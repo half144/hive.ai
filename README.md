@@ -1,5 +1,9 @@
+<div align="center">
 
 ![Frame 1 (2)](https://github.com/user-attachments/assets/2ca20065-0133-4deb-85ee-56be289d2eb0)
+
+</div>
+
 
 # hiveAI!
 
