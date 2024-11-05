@@ -1,11 +1,15 @@
 export interface IModel {
-  prompt: (prompt: string) => Promise<string>;
+  prompt: (prompt: string) => Promise<any>;
 }
 
 export class LLamaModel implements IModel {
   apiKey: string;
 
   constructor(apiKey: string) {
+    if(!apiKey) {
+      throw new Error("API_KEY not provided for LLamaModel")
+    }
+
     this.apiKey = apiKey;
   }
   async prompt(prompt: string) {
@@ -42,6 +46,10 @@ export class GeminiModel implements IModel {
   apiKey: string;
 
   constructor(apiKey: string) {
+    if(!apiKey) {
+      throw new Error("API_KEY not provided for GeminiModel")
+    }
+
     this.apiKey = apiKey;
   }
 

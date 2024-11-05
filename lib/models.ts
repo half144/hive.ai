@@ -9,13 +9,18 @@ type AgentProps = {
   knowledge?: string[];
 };
 
+interface Memory {
+  reflective: string[]; // Memória reflexiva
+  toolResponses: string[]; // Memória de respostas de ferramentas
+}
+
 class Agent {
   name: string;
   role: string;
   goal: string;
   tools: Tool[] = [];
   backstory: string;
-  knowledge?: string[] = [];
+  memory: Memory;
 
   constructor(agentProps: AgentProps) {
     this.role = agentProps.role;
@@ -23,7 +28,25 @@ class Agent {
     this.tools = agentProps.tools || [];
     this.name = agentProps.name;
     this.backstory = agentProps.backstory;
-    this.knowledge = agentProps.knowledge;
+    this.memory = {
+      reflective: [],
+      toolResponses: [],
+    };
+  }
+
+  // Método para adicionar uma reflexão à memória
+  addReflection(reflection: string) {
+    this.memory.reflective.push(reflection);
+  }
+
+  // Método para adicionar uma resposta da ferramenta à memória
+  addToolResponse(response: string) {
+    this.memory.toolResponses.push(response);
+  }
+
+  // Método para obter a memória completa do agente
+  getMemory() {
+    return this.memory;
   }
 }
 

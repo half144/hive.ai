@@ -1,15 +1,12 @@
 import env from "dotenv";
 import { Job } from "./lib/index.ts";
-import { GeminiModel, LLamaModel } from "./lib/llms.ts";
+import { LLamaModel } from "./lib/llms.ts";
 import { Agent, Task } from "./lib/models.ts";
 import { GoogleSearchTool } from "./lib/tools/googleSearch.ts";
 
 env.config();
 
 const apiKeyGloq = process.env.API_KE_GROQ || "";
-const apiKeyGemini = process.env.API_KEY_GEMINI || "";
-
-const gemini = new GeminiModel(apiKeyGemini);
 const llama = new LLamaModel(apiKeyGloq);
 
 const Jake = new Agent({
@@ -21,16 +18,28 @@ const Jake = new Agent({
   tools: [GoogleSearchTool],
 });
 
-const SearchPriceBitCoin = new Task({
-  description: "search for the price of bitcoin",
+const NewYork = new Task({
+  description: "weather in New York",
   agent: Jake,
-  expectedOutput: "The price of bitcoin",
+  expectedOutput: "the weather in New York",
+});
+
+const BitCoin = new Task({
+  description: "bitcoin price",
+  agent: Jake,
+  expectedOutput: "the price of bitcoin",
+});
+
+const Ethereum = new Task({
+  description: "ethereum price",
+  agent: Jake,
+  expectedOutput: "the price of ethereum",
 });
 
 const main = async () => {
   const job = new Job({
     agents: [Jake],
-    tasks: [SearchPriceBitCoin],
+    tasks: [BitCoin],
     model: llama,
   });
 

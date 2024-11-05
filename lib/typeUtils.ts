@@ -9,6 +9,7 @@ const typ = {
   bigint: "bigint",
   date: "date",
   error: "error",
+  options: (options: string[]) => options.join(" | ")
 };
 
 function getParams(obj: any): string {
