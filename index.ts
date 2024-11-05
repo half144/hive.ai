@@ -1,5 +1,5 @@
 import env from "dotenv";
-import { Job } from "./src/index.ts";
+import { Hive } from "./src/index.ts";
 import { Agent, Task } from "./src/models.ts";
 import { GoogleSearchTool } from "./src/tools/googleSearch.ts";
 import { MathTool } from "./src/tools/mathTool.ts";
@@ -21,7 +21,7 @@ const Jake = new Agent({
 });
 
 const main = async () => {
-  const job = new Job(
+  const job = new Hive(
     {
       agents: [Jake],
       tasks: [

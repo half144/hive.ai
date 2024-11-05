@@ -1,4 +1,4 @@
-import { Job } from ".";
+import { Hive } from ".";
 import { IModel } from "./llms/index";
 
 
@@ -46,7 +46,7 @@ class Agent {
     return this.memory;
   }
   standalone({prompt, model}: {prompt: string, model: IModel}) {
-    return new Job({
+    return new Hive({
       agents: [this],
       tasks: [
         new Task({

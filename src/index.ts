@@ -3,7 +3,7 @@ import { Task, JobProps, Plan, Tool, Agent } from "./models";
 import { IModel } from "./llms/index";
 import inform from "./helper/console.ts";
 
-class Job {
+class Hive {
   agents: Agent[];
   tasks: Task[];
   model: IModel;
@@ -195,4 +195,4 @@ class Job {
   }
 }
 
-export { Job };
+export { Hive };
