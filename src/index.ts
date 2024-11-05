@@ -57,8 +57,6 @@ class Hive {
         ${JSON.stringify(tool?.executerParams)}
       `;
 
-      console.log({prompt})
-
       const response = await this.model.prompt(prompt);
 
       console.log(chalk.bgCyan(chalk.black(`Response from LLM:`)));
@@ -89,7 +87,7 @@ class Hive {
 
   private async generateSummary(taskResults: any[]) {
     const summaryLines = taskResults.map((result) => {
-      return `- Task: "${result.task}" - objective: "${result.objective}" - Response: ${JSON.stringify(result.response)}.`;
+      return `** Task: "${result.task}"; \n **Objective: "${result.objective}"; \n **Response: ${JSON.stringify(result.response)}. \n **Expected Output: "${result.expectedOutput}"`;
     });
 
     // create a prompt wich will return the basic summary about each task
@@ -98,13 +96,13 @@ class Hive {
       ${summaryLines.join("\n")}
 
       ### Summary Prompt ###
-      Return a direct and super simple summary of each task.
+      Return a direct and super simple summary of task.
 
       ### Output Format ###
       {
         "summary": [
           {
-            "response": "conslusion of the task. should be the expected output",
+            "response": "conslusion of the task",
           }
         ]
       }

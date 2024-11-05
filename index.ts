@@ -26,9 +26,9 @@ const main = async () => {
       agents: [Jake],
       tasks: [
         new Task({
-          description: "Get the current price bitcoin in BRL",
+          description: "Price of bitcoin in BRL",
           agent: Jake,
-          expectedOutput: "the bitcoin price in BRL",
+          expectedOutput: "the price",
         }),
       ],
       model: llama,
