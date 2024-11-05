@@ -21,17 +21,36 @@ const Jake = new Agent({
   tools: [GoogleSearchTool, MathTool, WeatherTool],
 });
 
-const DolarPrice = new Task({
-  description: "I want to know the dolar price based in USD/BRL",
-  agent: Jake,
-  expectedOutput: "The price of the dolar today is $ USD/BRL",
-});
-
 const main = async () => {
-  await Jake.standalone({
-    prompt: "What is the price of the dolar today? based in BRL",
-    model: llama,
-  }).execute()
+  const job = new Job(
+    {
+      agents: [Jake],
+      tasks: [
+        new Task({
+          description: "Get the weather for New York City",
+          agent: Jake,
+          expectedOutput: "the weather in celsius",
+        }),
+        new Task({
+          description: "Get the weather for London",
+          agent: Jake,
+          expectedOutput: "the weather in celsius",
+        }),
+        new Task({
+          description: "Get the weather for Paris",
+          agent: Jake,
+          expectedOutput: "the weather in celsius",
+        }),
+        new Task({
+          description: "Return a media for me the climate media of the 3 cities using the math tool",
+          agent: Jake,
+          expectedOutput: "the media of paris, london and new york",
+        }),
+      ],
+      model: llama,
+    }
+  );
+  const results = await job.execute();
 };
 
 main();

@@ -40,19 +40,13 @@ class Job {
       const prompt = `
         ### Job Context ###
         - **Overall Objective**: Complete the tasks using designated agents and tools.
-        - **Previous Tasks**: ${JSON.stringify(taskResults)}
+        - **Previous Tasks**: ${taskResults.map((task) => `${task.task} = ${task.response}`).join("\n")}
 
         ### Current Action ###
         - **Task Objective**: ${planAction.objective}
         - **Task Description**: ${planAction.task}
-        - **Assigned Agent**: ${agent!.name} 
         - **Agent Goal**: ${agent!.goal}
         - **Selected Tool**: ${planAction.tool} - ${tool?.description}
-
-        ### You ###
-        - **Your Name**: ${agent!.name}
-        - **Your Goal**: ${agent!.goal}
-        - **Your memory**: ${JSON.stringify(agent!.getMemory())}
 
         ### Instructions ###
         Leverage the selected tool along with the contextual information and memory to effectively complete the described task. Reference previous memory and results as needed to ensure coherence in your response. 
@@ -63,26 +57,30 @@ class Job {
         ${JSON.stringify(tool?.executerParams)}
       `;
 
+      console.log({prompt})
+
       const response = await this.model.prompt(prompt);
 
       console.log(chalk.bgCyan(chalk.black(`Response from LLM:`)));
       console.log(chalk.blueBright(JSON.stringify(response)));
 
       const resultFromTool = await tool!.executer(response);
-      agent!.addToolResponse(JSON.stringify(resultFromTool)); // Adiciona a resposta da ferramenta à memória do agente
+      agent!.addToolResponse(JSON.stringify(resultFromTool)); 
 
       console.log(chalk.bgCyan(chalk.black(`Result from ${tool?.name}:`)));
       console.log(chalk.blueBright(JSON.stringify(resultFromTool)));
 
 
-      taskResults.push({
+      const result = {
         task: planAction.task,
         objective: planAction.objective,
         response: resultFromTool,
         expectedOutput: planAction?.expectedOutput,
-      });
+      };
 
-      this.generateSummary([taskResults.at(-1)]);
+      const res = await this.generateSummary([result]);
+
+      taskResults.push({task: planAction.objective, response: res});
     }
 
     // Retornar os resultados das tarefas
@@ -106,8 +104,6 @@ class Job {
       {
         "summary": [
           {
-            "task": "Task Description",
-            "agent": "Agent Name",
             "response": "conslusion of the task. should be the expected output",
           }
         ]
@@ -118,7 +114,7 @@ class Job {
     summary.summary.forEach((task: any) => {
       inform.agent(task.response)
     });
-    return summary;
+    return summary.summary[0].response;
 
   }
 
@@ -196,10 +192,6 @@ class Job {
 
   findTool(agent: Agent, toolName: string) {
     return agent.tools.find((tool) => tool.name === toolName);
-  }
-
-  useTool(tool: Tool, response: string) {
-    tool.executer(response);
   }
 }
 

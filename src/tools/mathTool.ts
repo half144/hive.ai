@@ -1,19 +1,22 @@
 import { Tool } from "../models";
 
 const MathParams = {
-  operation: "add | subtract | multiply | divide",
+  operation: "add | subtract | multiply | divide | avarage",
   operands: "number[]", 
 };
 
 const MathTool = new Tool({
   description:
-    "Performs basic mathematical operations: addition, subtraction, multiplication, and division. i should receive numbers as an array and the operation",
+    "Performs basic mathematical operations: addition, subtraction, multiplication, division and average. for math, use me.",
   name: "MathTool",
   executerParams: MathParams,
   executer: async ({ operation, operands }) => {
     let result;
 
     switch (operation) {
+      case "average":
+        result = operands.reduce((acc: any, curr: any) => acc + curr, 0) / operands.length;
+        break;
       case "add":
         result = operands.reduce((acc: any, curr: any) => acc + curr, 0);
         break;
