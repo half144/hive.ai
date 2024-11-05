@@ -1,4 +1,5 @@
-import { IModel } from "./llms";
+import { IModel } from "./llms/index";
+
 
 type AgentProps = {
   name: string;

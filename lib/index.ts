@@ -1,6 +1,6 @@
 import chalk from "chalk";
 import { Task, JobProps, Plan, Tool, Agent } from "./models";
-import { IModel } from "./llms";
+import { IModel } from "./llms/index";
 
 class Job {
   agents: Agent[];
@@ -68,13 +68,12 @@ class Job {
       console.log(chalk.bgCyan(chalk.black(`Result from ${tool?.name}:`)));
       console.log(chalk.blueBright(JSON.stringify(resultFromTool)));
 
-      // Armazena o resultado da tarefa
+
       taskResults.push({
         task: planAction.task,
-        agent: agent!.name,
-        tool: tool?.name,
         objective: planAction.objective,
         response: resultFromTool,
+        expectedOutput: planAction?.expectedOutput,
       });
 
       this.generateSummary([taskResults.at(-1)]);
@@ -162,7 +161,7 @@ class Job {
         {
           "plan": [
             {
-              "task": "Description of the Task",
+              "task": "Task Description",
               "agent": "Name of the Agent",
               "tool": "Name of the Tool", // *Each plan step should utilize only one tool*
               "objective": "Specific Goal of the Task",

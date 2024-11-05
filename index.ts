@@ -1,9 +1,9 @@
 import env from "dotenv";
 import { Job } from "./lib/index.ts";
-import { LLamaModel } from "./lib/llms.ts";
 import { Agent, Task } from "./lib/models.ts";
 import { GoogleSearchTool } from "./lib/tools/googleSearch.ts";
 import { MathTool } from "./lib/tools/mathTool.ts";
+import { LLamaModel } from "./lib/llms/llamaGroq.ts";
 
 env.config();
 
@@ -11,36 +11,24 @@ const apiKeyGloq = process.env.API_KE_GROQ || "";
 const llama = new LLamaModel(apiKeyGloq);
 
 const Jake = new Agent({
-  role: "helper",
+  role: "searcher especialist",
   name: "Jake",
   backstory:
-    "a professional helper, who can search on the web for solve a problem",
-  goal: "help the user solve a problem",
-  tools: [GoogleSearchTool, MathTool],
+    "I am an expert in search. I can search for information in the web.",
+  goal: "search for information in the web for resolving a question",
+  tools: [GoogleSearchTool],
 });
 
-const BitCoin = new Task({
-  description: "Will get the price of bitcoin in the web",
+const Rio = new Task({
+  description: "Get the current Weather in sao paulo in celcius",
   agent: Jake,
-  expectedOutput: "the price of bitcoin",
-});
-
-const Ethereum = new Task({
-  description: "Will get the price of ethereum in the web",
-  agent: Jake,
-  expectedOutput: "the price of ethereum",
-});
-
-const PriceBitCoinAndEthereum = new Task({
-  description: "Make the sum of bitcoin and ethereum price",
-  agent: Jake,
-  expectedOutput: "the sum of bitcoin and ethereum price",
+  expectedOutput: "weather in sao paulo right now in celcius, like = 30C",
 })
 
 const main = async () => {
   const job = new Job({
     agents: [Jake],
-    tasks: [BitCoin],
+    tasks: [Rio],
     model: llama,
   });
 
