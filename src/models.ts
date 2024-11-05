@@ -45,7 +45,6 @@ class Agent {
   getMemory() {
     return this.memory;
   }
-
   standalone({prompt, model}: {prompt: string, model: IModel}) {
     return new Job({
       agents: [this],

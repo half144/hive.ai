@@ -5,7 +5,6 @@ import { GoogleSearchTool } from "./src/tools/googleSearch.ts";
 import { MathTool } from "./src/tools/mathTool.ts";
 import { LLamaModel } from "./src/llms/llamaGroq.ts";
 import { WeatherTool } from "./src/tools/weather.ts";
-import inform from "./src/helper/console.ts";
 
 env.config();
 
@@ -27,24 +26,9 @@ const main = async () => {
       agents: [Jake],
       tasks: [
         new Task({
-          description: "Get the weather for New York City",
+          description: "Get the current price bitcoin in BRL",
           agent: Jake,
-          expectedOutput: "the weather in celsius",
-        }),
-        new Task({
-          description: "Get the weather for London",
-          agent: Jake,
-          expectedOutput: "the weather in celsius",
-        }),
-        new Task({
-          description: "Get the weather for Paris",
-          agent: Jake,
-          expectedOutput: "the weather in celsius",
-        }),
-        new Task({
-          description: "Return a media for me the climate media of the 3 cities using the math tool",
-          agent: Jake,
-          expectedOutput: "the media of paris, london and new york",
+          expectedOutput: "the bitcoin price in BRL",
         }),
       ],
       model: llama,
