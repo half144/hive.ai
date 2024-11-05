@@ -22,11 +22,11 @@ export class LLamaModel implements IModel {
         Authorization: `Bearer ${this.apiKey}`,
       },
       body: JSON.stringify({
-        model: "llama3-8b-8192",
+        model: "llama3-70b-8192",
         messages: [
           {
             role: "user",
-            content: `response in json ->${prompt}`,
+            content: `[JSON] ${prompt}`,
           },
         ],
         response_format: {

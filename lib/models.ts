@@ -34,11 +34,6 @@ class Agent {
     };
   }
 
-  // Método para adicionar uma reflexão à memória
-  addReflection(reflection: string) {
-    this.memory.reflective.push(reflection);
-  }
-
   // Método para adicionar uma resposta da ferramenta à memória
   addToolResponse(response: string) {
     this.memory.toolResponses.push(response);
@@ -93,6 +88,7 @@ type Plan = {
   tool: string;
   objective: string;
   task: string;
+  expectedOutput: string;
 };
 
 type JobProps = {

@@ -16,8 +16,7 @@ class Job {
   async execute() {
     const { plan } = await this.buildPlan();
     const results = await this.executePlan(plan);
-    const summary = await this.generateSummary(results); // Gera o resumo final baseado nos resultados
-    return { results, summary }; // Retorna tanto os resultados quanto o resumo
+    return { results }; 
   }
 
   private async executePlan(plan: Plan[]) {
@@ -35,8 +34,6 @@ class Job {
       const prompt = `
         ### Job Context ###
         - **Overall Objective**: Complete the tasks using designated agents and tools.
-        - **Previous Memory**: 
-          ${agent!.memory.reflective.length > 0 ? agent!.memory.reflective.join("\n") : "No prior reflections recorded."}
         - **Previous Tasks**: ${JSON.stringify(taskResults)}
 
         ### Current Action ###
@@ -46,12 +43,18 @@ class Job {
         - **Agent Goal**: ${agent!.goal}
         - **Selected Tool**: ${planAction.tool} - ${tool?.description}
 
+        ### You ###
+        - **Your Name**: ${agent!.name}
+        - **Your Goal**: ${agent!.goal}
+        - **Your memory**: ${JSON.stringify(agent!.getMemory())}
+
         ### Instructions ###
         Leverage the selected tool along with the contextual information and memory to effectively complete the described task. Reference previous memory and results as needed to ensure coherence in your response. 
 
         ### Expected Response Format ###
+        The response will be used as input for the selected tool.
         Please follow the strict response format outlined below:
-        ${tool?.executerParams}
+        ${JSON.stringify(tool?.executerParams)}
       `;
 
       const response = await this.model.prompt(prompt);
@@ -65,10 +68,6 @@ class Job {
       console.log(chalk.bgCyan(chalk.black(`Result from ${tool?.name}:`)));
       console.log(chalk.blueBright(JSON.stringify(resultFromTool)));
 
-      // Adiciona reflexão à memória do agente
-      const reflection = `Executed task: ${planAction.objective} using tool: ${tool?.name}.`;
-      agent!.addReflection(reflection);
-
       // Armazena o resultado da tarefa
       taskResults.push({
         task: planAction.task,
@@ -76,8 +75,9 @@ class Job {
         tool: tool?.name,
         objective: planAction.objective,
         response: resultFromTool,
-        reflection: reflection,
       });
+
+      this.generateSummary([taskResults.at(-1)]);
     }
 
     // Retornar os resultados das tarefas
@@ -103,7 +103,7 @@ class Job {
           {
             "task": "Task Description",
             "agent": "Agent Name",
-            "response": "Response from the Agent",
+            "response": "conslusion of the task. should be the expected output",
           }
         ]
       }
@@ -142,29 +142,34 @@ class Job {
     tasks.forEach((task) => console.log(chalk.greenBright(task)));
 
     const planningPrompt = `
-      ### Task Planning ###
-      Review the following tasks and devise a comprehensive execution plan.
+        ### Task Planning ###
+        Carefully review the list of tasks provided below and formulate a detailed execution plan to accomplish them.
 
-      Tasks:
-      [${tasks.join(",\n")}]
+        **Tasks:**
+        [${tasks.join(",\n")}]
 
-      For each task, please specify:
-      - Responsible agent (by name).
-      - Tool the agent will utilize to achieve the objective.
-      - Clear and specific objective of the task.
+        For each task, please provide the following details:
+        - **Assigned Agent:** Specify the name of the agent responsible for executing the task.
+        - **Selected Tool:** Identify the specific tool that the agent will employ to complete the task.
+        - **Defined Objective:** Clearly articulate the specific goal of the task.
+        - **Anticipated Outcome:** Describe the expected result or output from successfully completing the task.
 
-      **Output Format:**
-      !! RESPONSE MUST FOLLOW THIS STRICT FORMAT !!
-      {
-        "plan": [
-          {
-            "task": "Task Description",
-            "agent": "Agent Name",
-            "tool": "Tool Name",
-            "objective": "Specific Objective" // Feel free to elaborate as needed
-          }
-        ]
-      }
+        **Output Format:**
+        
+        Your execution plan should be structured in a way that facilitates the agent in achieving their objectives effectively. Feel free to rearrange the tasks as necessary; they do not need to follow the original order. If a task requires information or results from another task, ensure that the plan reflects this dependency appropriately.
+
+        !! YOUR RESPONSE MUST STRICTLY FOLLOW THIS FORMAT !!
+        {
+          "plan": [
+            {
+              "task": "Description of the Task",
+              "agent": "Name of the Agent",
+              "tool": "Name of the Tool", // *Each plan step should utilize only one tool*
+              "objective": "Specific Goal of the Task",
+              "expectedOutput": "Description of the Expected Outcome"
+            }
+          ]
+        }
     `;
 
     const plan = await this.model.prompt(planningPrompt);

@@ -9,7 +9,7 @@ const GoogleSearchParams = {
 
 const GoogleSearchTool = new Tool({
   description:
-    "Search in the web using google. returns a list of results, you still need to handle it.",
+    "Search in the web using google. returns a list of results, you still need to handle it. for me, return explicity input with a question",
   name: "Google",
   executerParams: getParams(GoogleSearchParams),
   executer: async ({ query }) => {
