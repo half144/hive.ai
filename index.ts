@@ -1,9 +1,11 @@
 import env from "dotenv";
-import { Job } from "./lib/index.ts";
-import { Agent, Task } from "./lib/models.ts";
-import { GoogleSearchTool } from "./lib/tools/googleSearch.ts";
-import { MathTool } from "./lib/tools/mathTool.ts";
-import { LLamaModel } from "./lib/llms/llamaGroq.ts";
+import { Job } from "./src/index.ts";
+import { Agent, Task } from "./src/models.ts";
+import { GoogleSearchTool } from "./src/tools/googleSearch.ts";
+import { MathTool } from "./src/tools/mathTool.ts";
+import { LLamaModel } from "./src/llms/llamaGroq.ts";
+import { WeatherTool } from "./src/tools/weather.ts";
+import inform from "./src/helper/console.ts";
 
 env.config();
 
@@ -16,23 +18,20 @@ const Jake = new Agent({
   backstory:
     "I am an expert in search. I can search for information in the web.",
   goal: "search for information in the web for resolving a question",
-  tools: [GoogleSearchTool],
+  tools: [GoogleSearchTool, MathTool, WeatherTool],
 });
 
-const Rio = new Task({
-  description: "Get the current Weather in sao paulo in celcius",
+const DolarPrice = new Task({
+  description: "I want to know the dolar price based in USD/BRL",
   agent: Jake,
-  expectedOutput: "weather in sao paulo right now in celcius, like = 30C",
-})
+  expectedOutput: "The price of the dolar today is $ USD/BRL",
+});
 
 const main = async () => {
-  const job = new Job({
-    agents: [Jake],
-    tasks: [Rio],
+  await Jake.standalone({
+    prompt: "What is the price of the dolar today? based in BRL",
     model: llama,
-  });
-
-  await job.execute();
+  }).execute()
 };
 
 main();

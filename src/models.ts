@@ -1,3 +1,4 @@
+import { Job } from ".";
 import { IModel } from "./llms/index";
 
 
@@ -43,6 +44,20 @@ class Agent {
   // Método para obter a memória completa do agente
   getMemory() {
     return this.memory;
+  }
+
+  standalone({prompt, model}: {prompt: string, model: IModel}) {
+    return new Job({
+      agents: [this],
+      tasks: [
+        new Task({
+          description: prompt,
+          agent: this,
+          expectedOutput: "",
+        })
+      ],
+      model
+    })
   }
 }
 

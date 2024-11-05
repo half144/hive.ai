@@ -14,7 +14,7 @@ const GoogleSearchTool = new Tool({
   executerParams: getParams(GoogleSearchParams),
   executer: async ({ query }) => {
     console.log(
-      chalk.bgYellow(chalk.black(`Google - Searching for: ${query}`))
+      chalk.yellow(`Google - Searching for: ${query}`)
     );
 
     const apiKey = process.env.SERP_API_KEY || "";

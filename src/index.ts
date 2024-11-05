@@ -1,6 +1,7 @@
 import chalk from "chalk";
 import { Task, JobProps, Plan, Tool, Agent } from "./models";
 import { IModel } from "./llms/index";
+import inform from "./helper/console.ts";
 
 class Job {
   agents: Agent[];
@@ -24,12 +25,17 @@ class Job {
 
     for (const planAction of plan as Plan[]) {
       console.log("\n");
+      
       console.log(chalk.cyan(`Executing Plan: ${planAction.objective}`));
 
       const agent = this.agents.find(
         (agent) => agent.name === planAction.agent
       );
       const tool = this.findTool(agent!, planAction.tool);
+
+      inform.agent(`Task Objective: ${planAction.objective}`);
+      inform.agent(`Assigned Agent: ${agent!.name} - ${agent!.goal}`);
+      inform.agent(`Selected Tool: ${planAction.tool} - ${tool?.description}`);
 
       const prompt = `
         ### Job Context ###
@@ -110,7 +116,7 @@ class Job {
 
     const summary = await this.model.prompt(summaryPrompt);
     summary.summary.forEach((task: any) => {
-      console.log(task.response)
+      inform.agent(task.response)
     });
     return summary;
 
