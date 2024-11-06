@@ -58,11 +58,11 @@ class Cognitive {
 
     const response = await this.llm.prompt(prompt);
 
+    console.log(response);
+
     this.shortMemory.push(response);
 
     this.longMemory.push(context);
-
-    console.log(response);
 
     if (response.action != "none") {
       const prompt = `
@@ -99,8 +99,28 @@ class Cognitive {
     return response;
   }
 
-  async act() {
+  async preThought({ context = "You are a person, a real one. you can do anything", prompt }: { context?: string, prompt: string }) {
+    const preT = `
+        ${this.getMySelf()}
 
+        ## What is the current context?
+        - Context: ${context}
+
+        ## What the envoironment is says to me?
+        - ${prompt}
+
+        OBJECTIVE: What i need to though? about the situation
+
+        ### Output Format ###
+        {
+            "observation": "your observation here",
+            "thought": "what do you need to though?",         
+        }
+    `;
+
+    const thought = await this.llm.prompt(preT);
+
+    return thought;
   }
 }
 
