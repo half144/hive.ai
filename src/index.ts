@@ -105,7 +105,7 @@ class Hive {
       {
         "summary": [
           {
-            "response": "conslusion of the task",
+            "response": "conslusion of the task, dont be afraid to be long if you want",
           }
         ]
       }

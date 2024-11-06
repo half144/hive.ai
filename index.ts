@@ -20,7 +20,7 @@ const Rafael = new Agent({
 })
 
 const main = async () => {
-  await Rafael.standalone({prompt: "Qual vai ser o proximo jogo do brasileirao?", model: llama}).execute();
+  await Rafael.standalone({prompt: "o tem acontecido no rio de janeiro ultimamente?", model: llama}).execute();
 };
 
 main();
