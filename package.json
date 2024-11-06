@@ -18,6 +18,7 @@
   "dependencies": {
     "chalk": "^5.3.0",
     "dotenv": "^16.4.5",
+    "puppeteer": "^23.7.0",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.2"
   }

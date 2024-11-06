@@ -1,7 +1,6 @@
 import chalk from "chalk";
 import { Tool } from "../models";
 import { getParams, typ } from "../typeUtils";
-import { title } from "process";
 
 const GoogleSearchParams = {
   query: typ.string,
@@ -13,9 +12,7 @@ const GoogleSearchTool = new Tool({
   name: "Google",
   executerParams: getParams(GoogleSearchParams),
   executer: async ({ query }) => {
-    console.log(
-      chalk.yellow(`Google - Searching for: ${query}`)
-    );
+    console.log(chalk.yellow(`Google - Searching for: ${query}`));
 
     const apiKey = process.env.SERP_API_KEY || "";
 
@@ -32,10 +29,10 @@ const GoogleSearchTool = new Tool({
       })
     );
 
-
     return res.map((item: any) => ({
       title: item.title,
-      snippet: item.snippet
+      snippet: item.snippet,
+      link: item.link,
     }));
   },
 });

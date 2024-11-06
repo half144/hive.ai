@@ -17,7 +17,7 @@ class Hive {
   async execute() {
     const { plan } = await this.buildPlan();
     const results = await this.executePlan(plan);
-    return { results }; 
+    return { results };
   }
 
   private async executePlan(plan: Plan[]) {
@@ -25,7 +25,7 @@ class Hive {
 
     for (const planAction of plan as Plan[]) {
       console.log("\n");
-      
+
       console.log(chalk.cyan(`Executing Plan: ${planAction.objective}`));
 
       const agent = this.agents.find(
@@ -40,7 +40,9 @@ class Hive {
       const prompt = `
         ### Job Context ###
         - **Overall Objective**: Complete the tasks using designated agents and tools.
-        - **Previous Tasks**: ${taskResults.map((task) => `${task.task} = ${task.response}`).join("\n")}
+        - **Previous Tasks**: ${taskResults
+          .map((task) => `${task.task} = ${task.response}`)
+          .join("\n")}
 
         ### Current Action ###
         - **Task Objective**: ${planAction.objective}
@@ -50,6 +52,10 @@ class Hive {
 
         ### Instructions ###
         Leverage the selected tool along with the contextual information and memory to effectively complete the described task. Reference previous memory and results as needed to ensure coherence in your response. 
+
+
+        ### Thought about the plan action before executing the task ###
+        - ${planAction.thought}
 
         ### Expected Response Format ###
         The response will be used as input for the selected tool.
@@ -63,11 +69,10 @@ class Hive {
       console.log(chalk.blueBright(JSON.stringify(response)));
 
       const resultFromTool = await tool!.executer(response);
-      agent!.addToolResponse(JSON.stringify(resultFromTool)); 
+      agent!.addToolResponse(JSON.stringify(resultFromTool));
 
       console.log(chalk.bgCyan(chalk.black(`Result from ${tool?.name}:`)));
       console.log(chalk.blueBright(JSON.stringify(resultFromTool)));
-
 
       const result = {
         task: planAction.task,
@@ -78,7 +83,7 @@ class Hive {
 
       const res = await this.generateSummary([result]);
 
-      taskResults.push({task: planAction.objective, response: res});
+      taskResults.push({ task: planAction.objective, response: res });
     }
 
     // Retornar os resultados das tarefas
@@ -87,7 +92,11 @@ class Hive {
 
   private async generateSummary(taskResults: any[]) {
     const summaryLines = taskResults.map((result) => {
-      return `** Task: "${result.task}"; \n **Objective: "${result.objective}"; \n **Response: ${JSON.stringify(result.response)}. \n **Expected Output: "${result.expectedOutput}"`;
+      return `** Task: "${result.task}"; \n **Objective: "${
+        result.objective
+      }"; \n **Response: ${JSON.stringify(
+        result.response
+      )}. \n **Expected Output: "${result.expectedOutput}"`;
     });
 
     // create a prompt wich will return the basic summary about each task
@@ -96,7 +105,7 @@ class Hive {
       ${summaryLines.join("\n")}
 
       ### Summary Prompt ###
-      Return a direct and super simple summary of task.
+      Return asummary of task. detailed summary.
       the response should be like expected output format.
       because its that what user want, the response should respond
       the expected output format.
@@ -104,7 +113,7 @@ class Hive {
       ### Output Format ###
       {
         "summary": [
-          {
+          {   
             "response": "conslusion of the task, dont be afraid to be long if you want",
           }
         ]
@@ -113,10 +122,9 @@ class Hive {
 
     const summary = await this.model.prompt(summaryPrompt);
     summary.summary.forEach((task: any) => {
-      inform.agent(task.response)
+      inform.agent(task.response);
     });
     return summary.summary[0].response;
-
   }
 
   private async buildPlan() {
@@ -155,6 +163,7 @@ class Hive {
         - **Selected Tool:** Identify the specific tool that the agent will employ to complete the task.
         - **Defined Objective:** Clearly articulate the specific goal of the task.
         - **Anticipated Outcome:** Describe the expected result or output from successfully completing the task.
+        - **Thought about the plan action before executing the task:** Think about you need, detailed
 
         **Output Format:**
         
@@ -164,6 +173,7 @@ class Hive {
         {
           "plan": [
             {
+              "thought": "Your Thought about the plan action before executing the task",
               "task": "Task Description",
               "agent": "Name of the Agent",
               "tool": "Name of the Tool", // *Each plan step should utilize only one tool*

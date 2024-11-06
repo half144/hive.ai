@@ -1,7 +1,6 @@
 import { Hive } from ".";
 import { IModel } from "./llms/index";
 
-
 type AgentProps = {
   name: string;
   role: string;
@@ -45,7 +44,7 @@ class Agent {
   getMemory() {
     return this.memory;
   }
-  standalone({prompt, model}: {prompt: string, model: IModel}) {
+  standalone({ prompt, model }: { prompt: string; model: IModel }) {
     return new Hive({
       agents: [this],
       tasks: [
@@ -53,10 +52,10 @@ class Agent {
           description: prompt,
           agent: this,
           expectedOutput: "",
-        })
+        }),
       ],
-      model
-    })
+      model,
+    });
   }
 }
 
@@ -104,6 +103,7 @@ type Plan = {
   objective: string;
   task: string;
   expectedOutput: string;
+  thought: string;
 };
 
 type JobProps = {
