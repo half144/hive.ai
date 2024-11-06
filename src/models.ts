@@ -1,63 +1,13 @@
 import { Hive } from ".";
 import { IModel } from "./llms/index";
 
-type AgentProps = {
-  name: string;
-  role: string;
-  goal: string;
-  tools?: Tool[];
-  backstory: string;
-  knowledge?: string[];
-};
+import { Agent } from "./agent/index";
 
 interface Memory {
   reflective: string[]; // Memória reflexiva
   toolResponses: string[]; // Memória de respostas de ferramentas
 }
 
-class Agent {
-  name: string;
-  role: string;
-  goal: string;
-  tools: Tool[] = [];
-  backstory: string;
-  memory: Memory;
-
-  constructor(agentProps: AgentProps) {
-    this.role = agentProps.role;
-    this.goal = agentProps.goal;
-    this.tools = agentProps.tools || [];
-    this.name = agentProps.name;
-    this.backstory = agentProps.backstory;
-    this.memory = {
-      reflective: [],
-      toolResponses: [],
-    };
-  }
-
-  // Método para adicionar uma resposta da ferramenta à memória
-  addToolResponse(response: string) {
-    this.memory.toolResponses.push(response);
-  }
-
-  // Método para obter a memória completa do agente
-  getMemory() {
-    return this.memory;
-  }
-  standalone({ prompt, model }: { prompt: string; model: IModel }) {
-    return new Hive({
-      agents: [this],
-      tasks: [
-        new Task({
-          description: prompt,
-          agent: this,
-          expectedOutput: "",
-        }),
-      ],
-      model,
-    });
-  }
-}
 
 type TaskProps = {
   description: string;
@@ -112,4 +62,4 @@ type JobProps = {
   model: IModel;
 };
 
-export { Agent, Task, Tool, JobProps, Plan };
+export { Task, Tool, JobProps, Plan };

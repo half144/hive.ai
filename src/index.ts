@@ -1,7 +1,9 @@
 import chalk from "chalk";
-import { Task, JobProps, Plan, Tool, Agent } from "./models";
+import { Task, JobProps, Plan, Tool } from "./models";
 import { IModel } from "./llms/index";
 import inform from "./helper/console.ts";
+
+import { Agent } from "./agent/index";
 
 class Hive {
   agents: Agent[];
@@ -69,7 +71,6 @@ class Hive {
       console.log(chalk.blueBright(JSON.stringify(response)));
 
       const resultFromTool = await tool!.executer(response);
-      agent!.addToolResponse(JSON.stringify(resultFromTool));
 
       console.log(chalk.bgCyan(chalk.black(`Result from ${tool?.name}:`)));
       console.log(chalk.blueBright(JSON.stringify(resultFromTool)));
