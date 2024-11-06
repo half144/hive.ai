@@ -1,40 +1,26 @@
 import env from "dotenv";
 import { Hive } from "./src/index.ts";
-import { Agent, Task } from "./src/models.ts";
-import { GoogleSearchTool } from "./src/tools/googleSearch.ts";
-import { MathTool } from "./src/tools/mathTool.ts";
+import { Agent, Task, Tool } from "./src/models.ts";
 import { LLamaModel } from "./src/llms/llamaGroq.ts";
-import { WeatherTool } from "./src/tools/weather.ts";
+
+import { GoogleSearchTool } from "./src/tools/googleSearch.ts"
+
 
 env.config();
 
 const apiKeyGloq = process.env.API_KE_GROQ || "";
 const llama = new LLamaModel(apiKeyGloq);
 
-const Jake = new Agent({
-  role: "searcher especialist",
-  name: "Jake",
-  backstory:
-    "I am an expert in search. I can search for information in the web.",
-  goal: "search for information in the web for resolving a question",
-  tools: [GoogleSearchTool, MathTool, WeatherTool],
-});
+const Rafael = new Agent({
+  backstory: "I'm Rafael, I'm an internet user. I want to explore the web.",
+  goal: "Use the web, he just want explore",
+  name: "Rafael",
+  role: "Internet User",
+  tools: [GoogleSearchTool],
+})
 
 const main = async () => {
-  const job = new Hive(
-    {
-      agents: [Jake],
-      tasks: [
-        new Task({
-          description: "Price of bitcoin in BRL",
-          agent: Jake,
-          expectedOutput: "the price",
-        }),
-      ],
-      model: llama,
-    }
-  );
-  const results = await job.execute();
+  await Rafael.standalone({prompt: "Qual vai ser o proximo jogo do brasileirao?", model: llama}).execute();
 };
 
 main();

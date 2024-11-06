@@ -97,6 +97,9 @@ class Hive {
 
       ### Summary Prompt ###
       Return a direct and super simple summary of task.
+      the response should be like expected output format.
+      because its that what user want, the response should respond
+      the expected output format.
 
       ### Output Format ###
       {

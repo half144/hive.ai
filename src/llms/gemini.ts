@@ -31,7 +31,7 @@ export class GeminiModel implements IModel {
             },
           ],
           generationConfig: {
-            temperature: 1,
+            temperature: 0,
             topK: 40,
             topP: 0.95,
             maxOutputTokens: 4000,

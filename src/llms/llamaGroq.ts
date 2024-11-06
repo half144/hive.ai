@@ -32,7 +32,7 @@ export class LLamaModel implements IModel {
           response_format: {
             type: "json_object",
           },
-          temperature: 1,
+          temperature: 0,
           max_tokens: 1024,
           top_p: 1,
         }),
