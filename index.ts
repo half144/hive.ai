@@ -11,8 +11,6 @@ import { Agent } from "./src/agent/index.ts";
 
 import { Cognitive } from "./src/agent/cognitive.ts";
 
-
-
 env.config();
 
 const llama = new LLamaModel();
@@ -22,15 +20,16 @@ const Rafael = new Agent({
   goal: "Use the web, he just want explore",
   name: "Rafael",
   role: "Internet User",
-  tools: [WeatherTool],
+  tools: [WeatherTool, GoogleSearchTool],
 });
 
 const main = async () => {
   const cognitive = new Cognitive(llama, Rafael);
 
-  const res = await cognitive.thought("You in a good mood", "What is the weather today?");
-
-  console.log(res);
+  await Rafael.standalone({
+    prompt: "Me de um resumo sobre as ultimas noticias que aconteceram em belford roxo, tambem me diga a temperatura atual.",
+    model: llama,
+  }).execute()  
 };
 
 main();

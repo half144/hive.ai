@@ -45,6 +45,7 @@ import { IModel } from "../llms";
             ### Output Format ###
             {
                 "thought": "your thought here",
+                "observation": "your observation here",
                 "action": "your action", // optional, only if you want to use it. if not, put 'none'
             }
         `

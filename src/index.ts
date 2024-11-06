@@ -95,7 +95,7 @@ class Hive {
     const summaryLines = taskResults.map((result) => {
       return `** Task: "${result.task}"; \n **Objective: "${
         result.objective
-      }"; \n **Response: ${JSON.stringify(
+      }"; \n **Conclusion response: ${JSON.stringify(
         result.response
       )}. \n **Expected Output: "${result.expectedOutput}"`;
     });
