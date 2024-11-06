@@ -21,7 +21,7 @@ export class LLamaModel implements IModel {
         Authorization: `Bearer ${this.apiKey}`,
       },
       body: JSON.stringify({
-        model: "llama3-70b-8192",
+        model: "llama3-8b-8192",
         messages: [
           {
             role: "user",
@@ -31,7 +31,7 @@ export class LLamaModel implements IModel {
         response_format: {
           type: "json_object",
         },
-        temperature: 0,
+        temperature: 0.3,
         max_tokens: 1024,
         top_p: 1,
       }),
