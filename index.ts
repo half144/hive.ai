@@ -35,8 +35,6 @@ const main = async () => {
     prompt: "hello how you doing?",
   })
 
-  console.log(thought);
-
   const result = await cognitive.thought({
     context: "I see you in the street, I'm Carlos. we are good friends. i say: hello how you doing?",
     toThought: thought

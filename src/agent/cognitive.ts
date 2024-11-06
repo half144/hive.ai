@@ -1,4 +1,5 @@
 import { Agent } from ".";
+import inform from "../helper/console";
 import { IModel } from "../llms";
 
 class Cognitive {
@@ -39,6 +40,7 @@ class Cognitive {
     toThought: string;
   }) {
     const prompt = `
+            ## You are the cognitive brain area from =>
             ${this.getMySelf()}
 
             ## What is the current situation?
@@ -47,18 +49,19 @@ class Cognitive {
             ## What i need to though?
             - ${toThought}
 
-            ** you will respond with a thought. in a json format**
+            ** you will respond with a thought, you will make an observation about situation and simulate a brain thought. **
             ### Output Format ###
             {
-                "thought": "your thought here",
-                "observation": "your observation here",
+                "thought": "your thought about situation here",
+                "observation": "your observation about all situation here",
                 "action": "your action", // optional, only if you want to use it. if not, put 'none'
             }
         `;
 
     const response = await this.llm.prompt(prompt);
 
-    console.log(response);
+    inform.agent(`Thought: ${response.thought}`);
+    inform.agent(`Observation: ${response.observation}`);
 
     this.shortMemory.push(response);
 
@@ -89,7 +92,9 @@ class Cognitive {
 
       const res = await this.llm.prompt(prompt);
 
-      console.log(res);
+      inform.agent(`Action: ${res.currentAction}`);
+      inform.agent(`Tool: ${res.tool}`);
+      inform.agent(`Tool Params: ${JSON.stringify(res.toolParams)}`);
 
       if(this.shortMemory.length > 4) {
         this.shortMemory.shift();
