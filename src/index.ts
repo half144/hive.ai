@@ -164,7 +164,7 @@ class Hive {
         - **Selected Tool:** Identify the specific tool that the agent will employ to complete the task.
         - **Defined Objective:** Clearly articulate the specific goal of the task.
         - **Anticipated Outcome:** Describe the expected result or output from successfully completing the task.
-        - **Thought about the plan action before executing the task:** Think about you need, detailed
+        - **Thought about the plan action before executing the task:** Think about you need
 
         **Output Format:**
         
