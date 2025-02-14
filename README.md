@@ -6,38 +6,38 @@
 
 </div>
 
-HIVE AI é uma biblioteca para a criação de agentes autônomos de IA que trabalham juntos para executar tarefas complexas de forma coordenada e eficiente. Cada agente é impulsionado por um **Large Language Model (LLM)** e pode utilizar ferramentas externas para interagir com o ambiente, tornando-se uma solução poderosa para automação inteligente e colaborativa.  
+HIVE AI is a library for creating autonomous AI agents that work together to execute complex tasks in a coordinated and efficient manner. Each agent is powered by a **Large Language Model (LLM)** and can use external tools to interact with the environment, making it a powerful solution for intelligent and collaborative automation.  
 
-## 📌 Tabela de Conteúdos
-- [Visão Geral](#visão-geral)
-- [Recursos](#recursos)
-- [Instalação](#instalação)
-- [Exemplo de Uso](#exemplo-de-uso)
-- [Contribuição](#contribuição)
-- [Licença](#licença)
+## 📌 Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage Example](#usage-example)
+- [Contributing](#contributing)
+- [License](#license)
 
-## 🔍 Visão Geral
+## 🔍 Overview
 
-HIVE AI fornece uma arquitetura flexível para o desenvolvimento de **agentes autônomos de IA** que podem se comunicar, planejar e executar tarefas utilizando ferramentas personalizadas. O design enfatiza **inteligência coletiva** e **colaboração**, sendo útil para diversas aplicações, como pesquisa na web, assistentes interativos e automação de fluxos de trabalho.  
+HIVE AI provides a flexible architecture for developing **autonomous AI agents** that can communicate, plan, and execute tasks using customized tools. The design emphasizes **collective intelligence** and **collaboration**, making it useful for various applications such as web research, interactive assistants, and workflow automation.  
 
-## ✨ Recursos
-- **Agentes Autônomos**: Cada agente pode operar de forma independente com um objetivo específico.  
-- **Planejamento Colaborativo**: Múltiplos agentes trabalham juntos para construir e executar planos de ação.  
-- **Ferramentas Customizáveis**: Os agentes podem utilizar ferramentas externas, como pesquisa no Google ou resumos de páginas da web.  
-- **Memória Persistente**: Os agentes podem lembrar interações passadas e melhorar seu desempenho com o tempo.  
-- **Escalabilidade**: Fácil de escalar, permitindo adicionar novos agentes e tarefas conforme necessário.  
+## ✨ Features
+- **Autonomous Agents**: Each agent operates independently with a specific goal.  
+- **Collaborative Planning**: Multiple agents work together to build and execute action plans.  
+- **Customizable Tools**: Agents can use external tools like Google search or web page summarization.  
+- **Persistent Memory**: Agents can remember past interactions and improve their performance over time.  
+- **Scalability**: Easily scale by adding new agents and tasks as needed.  
 
-## 🛠 Instalação
+## 🛠 Installation
 
-Para instalar o *HIVE AI*, utilize o **npm**:  
+To install *HIVE AI*, use **npm**:  
 
 ```bash
 npm install hiveai
 ```
 
-## 🚀 Exemplo de Uso  
+## 🚀 Usage Example  
 
-Aqui está um exemplo simples de como criar um agente autônomo que pesquisa informações na web e gera um artigo resumido com múltiplas fontes:  
+Here is a simple example of how to create an autonomous agent that searches for information on the web and generates a summarized article from multiple sources:  
 
 ```typescript
 import env from "dotenv";
@@ -79,14 +79,14 @@ const main = async () => {
 main();
 ```
 
-## 🤝 Contribuição
-Contribuições são bem-vindas! Para contribuir, siga os seguintes passos:
-1. Faça um fork do repositório.
-2. Crie uma nova branch: `git checkout -b minha-feature`.
-3. Faça as alterações e commit: `git commit -m 'Adicionando nova feature'`.
-4. Envie para o repositório: `git push origin minha-feature`.
-5. Abra um Pull Request.
+## 🤝 Contributing
+Contributions are welcome! To contribute, follow these steps:
+1. Fork the repository.
+2. Create a new branch: `git checkout -b my-feature`.
+3. Make your changes and commit: `git commit -m 'Adding a new feature'`.
+4. Push to the repository: `git push origin my-feature`.
+5. Open a Pull Request.
 
-## 📜 Licença
+## 📜 License
 
-Este projeto é licenciado sob a [MIT License](LICENSE).
+This project is licensed under the [MIT License](LICENSE).
